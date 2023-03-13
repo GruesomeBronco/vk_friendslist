@@ -1,4 +1,4 @@
-import argparse, requests, csv, json, os, re
+import argparse, requests, csv, json, os, re, datetime
 import logging
 from requests import HTTPError
 
@@ -14,9 +14,9 @@ def get_user_id(username):
         'v': API_VERSION,
     })
     data = response.json()
-    if not data['response']:
+    if len(data['response']) == 0:
         logging.error(f"Error occurred while getting user ID for {username}")
-    if 'response'[0] in data:
+    elif 'response' in data:
         return data['response'][0]['id']
     elif 'error' in data:
         logging.error(f"Error occurred while getting user ID for {username}: {data['error']['error_msg']}")
@@ -78,7 +78,13 @@ def dump(data, file_format, file_path, filename):
             for item in data:
                 row = {}
                 for col in column_order:
-                    if isinstance(item.get(col), dict):
+                    if col == 'bdate':
+                        bdate = item.get(col, '')
+                        if bdate:
+                            bdate_parts = bdate.split('.')
+                            if len(bdate_parts) >= 2:
+                                row[col] = '-'.join(reversed(bdate_parts))
+                    elif isinstance(item.get(col), dict):
                         row[col] = item[col].get('title', '')
                     else:
                         row[col] = item.get(col, '')
@@ -117,6 +123,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# ^https?:\/\/(?:www\.)?vk\.com\/([A-Za-z0-9_-]+)$
