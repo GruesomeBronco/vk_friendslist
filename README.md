@@ -1,21 +1,29 @@
 # vk_friendslist_app
-Python console app for working with VK API
+
+Скрипт для получения списка друзей из профиля соцсети ВК в формате CSV, TSV, или JSON.
+Для работы со всеми методами API вам необходимо передавать в запросе `access_token` — специальный ключ доступа. Он представляет собой строку из латинских букв и цифр и может соответствовать отдельному пользователю, сообществу или самому вашему приложению. 
+
+В нашем случае подойдет ключ приложения(сервисный ключ доступа). [Здесь](https://dev.vk.com/api/access-token/getting-started#%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BB%D1%8E%D1%87%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0)
+находится полная инструкция для получения сервисного ключа доступа.
+Сам скрипт ищет ключ в переменных окружения, добавляется он вот так:
+`export VK_SERVICE_ACCESS_TOKEN='your_token`
 
 ---
-
-# Как получить Access Token?
-
 
 # Формат запросов
 
 Запросы к API ВКонтакте имеют следующий формат:
-https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V
+`https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V`
+
 
 ## Endpoints:
 
+- https://dev.vk.com/method/users.get - Возвращает расширенную информацию о пользователях(используется для получения user_id);
+- https://dev.vk.com/method/friends.get - Возвращает список идентификаторов друзей пользователя или расширенную информацию о друзьях пользователя (используется параметр fields).
+
+
 # Использование скрипта
 
+`$ python get_vk_friends.py USER_ID_or_LINK_TO_PAGE -f ./output.csv`
 
-VK_SERVICE_ACCESS_TOKEN
-
-ISO 8601 2019-09-07
+`-f`- указывается путь до файла. Расширение файла может быть только CSV, TSV, или JSON. Иначе скрипт выдаст ошибку.
