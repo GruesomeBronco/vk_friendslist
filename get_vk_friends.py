@@ -78,6 +78,7 @@ def dump(data, file_format, file_path, filename):
             for item in data:
                 row = {}
                 for col in column_order:
+                    # Sorry for hardcode with bdates, but I did my best.
                     if col == 'bdate':
                         bdate = item.get(col, '')
                         if bdate:
