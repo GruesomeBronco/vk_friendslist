@@ -108,11 +108,11 @@ def main():
 
     # Check whether 'user' argument is link or user_id  
     user = args.user
-    if re.match(r'^(https?:\/\/)?(?:www\.)?(vk\.com\/)?([A-Za-z0-9_-]+)$', user):
+    if user.isdigit():
+        user_id = int(user)
+    elif re.match(r'^(https?:\/\/)?(?:www\.)?(vk\.com\/)?([A-Za-z0-9_-]+)$', user):
         username = user.split('/')[-1] # maybe use the capturing groups of regexes?
         user_id = get_user_id(username) # add some checks
-    elif user.isdigit():
-        user_id = int(user)
     else:
         raise ValueError(f"{user} is not a valid username or user ID")
 
